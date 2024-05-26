@@ -1,0 +1,24 @@
+guix build -L /sourcepath newpackage
+
+guix environment -L /storepath --ad-hoc package1 newpackage
+
+git format-patch
+./pre-inst-env guix linxu newpackage
+
+[[https://guix.gnu.org/contribute/][Contribute — GNU Guix]]
+
+[[https://guix.gnu.org/manual/en/guix.html#Packaging-Guidelines][GNU Guix Reference Manual]]
+[[https://github.com/abcdw/notes/blob/19dfeed8cf29ef856f4bf54bee6fd0c82e1e88b9/notes/20210125110315-guix_packaging_tutorial.org][notes/notes/20210125110315-guix_packaging_tutorial.org at 19dfeed8cf29ef856f4...]]
+
+
+https://youtu.be/R8DtPnP4eL8
+https://guix.gnu.org/manual/en/html_node/Defining-Packages.html
+https://guix.gnu.org/en/blog/2018/a-packaging-tutorial-for-guix/
+
+* Different inputs
+- native-inputs :: Required for building but not runtime – installing
+  a package through a substitute won't install these inputs.
+- inputs :: Installed in the store but not in the profile, as well as
+  being present at build time.
+- propagated-inputs :: Installed in the store and in the profile, as
+  well as being present at build time.

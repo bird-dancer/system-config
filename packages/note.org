@@ -1,0 +1,6 @@
+also belongs in the /etc/bashrc
+with
+if [ -f /run/current-system/profile/etc/profile.d/bash_completion.sh ]
+then
+source /run/current-system/profile/etc/profile.d/bash_completion.sh
+fi

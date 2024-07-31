@@ -10,6 +10,7 @@
              (gnu services)
              (guix gexp)
 	     (gnu home services)
+	     (gnu home services desktop)
 	     (gnu home services shepherd)
 	     (gnu home services syncthing)
              (gnu home services shells)
@@ -27,27 +28,28 @@
 (home-environment
  ;; Below is the list of packages that will show up in your
  ;; Home profile, under ~/.guix-home/profile.
- (packages (specifications->packages (list ;"gcc-toolchain@11"
+ (packages (specifications->packages (list
+				      "gcc-toolchain" "make"
 					;"cmake"
 					;"clementine"
-                                      "nomacs"
                                       "signal-desktop"
 					;"flatpak"
                                       "librewolf"
-                                      "mpv"
                                       "emacs"
-                                      ;"emacs-pdf-tools"
+					;"emacs-pdf-tools"
 				      "redshift-wayland"
                                       "glib:bin"
                                       "foot"
+				      "enchant" "hunspell-dict-en"
 				      "stow"
                                       "htop"
                                       "neofetch"
                                       "ripgrep"
-				      "nomacs"
+				      "nomacs" "mpv"
 					;"emacs-jinx"
 				      "syncthing"
 					;"unzip"
+				      "openssh-sans-x"
                                       "git" "git:send-email"
 				      "waybar"
 					;"cryptsetup"
@@ -61,6 +63,7 @@
  ;; services, run 'guix home search KEYWORD' in a terminal.
  (services
   (list
+   (service home-dbus-service-type)
    ;; (service home-redshift-service-type
    ;;          (home-redshift-configuration
    ;;           (location-provider 'manual)
@@ -101,9 +104,10 @@
                         ("lcear" . "clear")
                         ("ll" . "ls -lAghF --color=auto")
                         ("ls" . "ls -F --color=auto")))
-             (bashrc (list (local-file
-                            "/home/felix/src/guix-config/.bashrc"
-                            "bashrc")))
-             (bash-profile (list (local-file
-                                  "/home/felix/src/guix-config/.bash_profile"
-                                  "bash_profile"))))))))
+             ;; (bashrc (list (local-file
+             ;;                "/home/felix//guix-config/.bashrc"
+             ;;                "bashrc")))
+             ;; (bash-profile (list (local-file
+             ;;                      "/home/felix/system-config/.bash_profile"
+             ;;                      "bash_profile")))
+	     )))))

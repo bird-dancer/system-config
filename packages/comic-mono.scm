@@ -44,4 +44,4 @@
 ;; This allows you to run guix shell -f guix-packager.scm.
 ;; Remove this line if you just want to define a package.
 font-comic-mono
-font-comic-mono-bold
+;font-comic-mono-bold

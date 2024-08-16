@@ -3,7 +3,7 @@ with
 #+begin_src bash
   if [ -f /run/current-system/profile/etc/profile.d/bash_completion.sh ]
   then
-  source /run/current-system/profile/etc/profile.d/bash_completion.sh
+      source /run/current-system/profile/etc/profile.d/bash_completion.sh
   fi
 #+end_src
 

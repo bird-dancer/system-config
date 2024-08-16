@@ -3,6 +3,7 @@
 ### Variables
 #
 # Logo key. Use Mod1 for Alt.
+font Comic Shanns Mono Medium 13
 set $mod Mod4
 # Home row direction keys, like vim
 set $left h
@@ -11,6 +12,7 @@ set $up k
 set $right l
 # Your preferred terminal emulator
 set $term foot
+set $editor emacs -f eshell
 # Your preferred application launcher
 # Note: pass the final command to swaymsg so that the resulting window can be opened
 # on the original workspace that the command was run on.
@@ -25,7 +27,7 @@ exec_always "./$Home/.config/sway/wallpaper_slideshow.sh"
 exec_always {
 	    #gsettings set org.gnome.desktop.interface gtk-theme "Plata-Noir-Compact"
 	    #gsettings set org.gnome.desktop.interface icon-theme "Papirus-Dark"
-	    gsettings set $gnome-schema gtk-theme 'Gruvbox-Dark'
+	    # gsettings set $gnome-schema gtk-theme 'Gruvbox-Dark'
     # gsettings set $gnome-schema icon-theme 'Gruvbox-Dark'
     # gsettings set $gnome-schema cursor-theme 'Gruvbox-cursors'
 }
@@ -77,7 +79,8 @@ input "type:keyboard" {
 # Basics:
 #
     # Start a terminal
-    bindsym $mod+Return exec $term
+    bindsym $mod+Return exec $editor
+    bindsym $mod+t exec $term
 
     # Kill focused window
     bindsym $mod+Shift+q kill
@@ -215,13 +218,13 @@ bindsym $mod+r mode "resize"
 #
 # Read `man 5 sway-bar` for more information about this section.
 bar {
-    #position top
+    # position top
 
     # When the status_command prints a new line to stdout, swaybar updates.
     # The default just shows the current date and time.
-    #status_command while date +'%Y-%m-%d %X'; do sleep 1; done
+    # status_command while date +'%Y-%m-%d %X'; do sleep 1; done
     swaybar_command waybar
-    #workspace_buttons yes
+    # workspace_buttons yes
     # colors {
     #     statusline #ffffff
     #     background #323232

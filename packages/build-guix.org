@@ -1,6 +1,10 @@
-guix build -L /sourcepath newpackage
+guix build -L sourcepath newpackage
+
+guix package --install-from-file=my-hello.scm
 
 guix environment -L /storepath --ad-hoc package1 newpackage
+
+guix shell -f guix-packager.scm
 
 git format-patch
 ./pre-inst-env guix linxu newpackage
@@ -8,8 +12,6 @@ git format-patch
 [[https://guix.gnu.org/contribute/][Contribute — GNU Guix]]
 
 [[https://guix.gnu.org/manual/en/guix.html#Packaging-Guidelines][GNU Guix Reference Manual]]
-[[https://github.com/abcdw/notes/blob/19dfeed8cf29ef856f4bf54bee6fd0c82e1e88b9/notes/20210125110315-guix_packaging_tutorial.org][notes/notes/20210125110315-guix_packaging_tutorial.org at 19dfeed8cf29ef856f4...]]
-
 
 https://youtu.be/R8DtPnP4eL8
 https://guix.gnu.org/manual/en/html_node/Defining-Packages.html
@@ -22,3 +24,21 @@ https://guix.gnu.org/en/blog/2018/a-packaging-tutorial-for-guix/
   being present at build time.
 - propagated-inputs :: Installed in the store and in the profile, as
   well as being present at build time.
+[[https://guix.gnu.org/manual/en/html_node/Invoking-guix-import.html][Invoking guix import (GNU Guix Reference Manual)]]
+* unknown license
+#+begin_src scheme
+  (define custom-license
+    (license:fsdg-compatible
+     "Custom License Name"
+     "https://example.com/custom-license-text"
+     "Short description of the license"))
+  (define custom-license
+    (license:fsdg-compatible
+     "Apache-2.0_WITH_LLVM-exception"
+     "https://docs.rs/crate/rustix/0.38.34/source/LICENSE-Apache-2.0_WITH_LLVM-exception"
+     "Apache-2.0 with LLVM exception"))
+#+end_src
+* rust
+use guix import crate -r /packagename/ > /packagename/.scm
+* go
+use guix import go -r /packagename/

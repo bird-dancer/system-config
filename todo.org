@@ -1,0 +1,6 @@
++ password-store
+
++ emacs-password-store
++ emacs-auth-source-pass
+
+  

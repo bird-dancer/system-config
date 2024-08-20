@@ -27,12 +27,15 @@
    (list
     "gcc-toolchain" "make" "cmake" "glib:bin" "glibc"
     "signal-desktop"
+    "password-store" "emacs-password-store"
     ;; "flatpak"
     "librewolf"
+    ;; "emacs-next"
     "emacs"
+    "emacs-pdf-tools"
     "enchant" "hunspell-dict-en"
+    ;; "emacs-jinx"
     "ripgrep"
-    ;; "emacs-pdf-tools" "emacs-jinx"
     "redshift-wayland"
     "stow"
     "htop" "powertop"
@@ -43,11 +46,17 @@
     "git" "git:send-email"
     ;; dev
     ;; "go" "gopls"
-    "rust-cargo" "rust-analyzer" "rust"
-    "file";; "cryptsetup"
+    ;; "rust-cargo" "rust-analyzer" "rust"
+    "rust" "rust:cargo" "rust:tools" "rust:out" "rust:rust-src"
+    ;; "rust-analyzer"
+    "file"
+    "password-store" "gnupg" "pinentry-tty"
+    ;; "emacs-pinentry"
+    ;; "cryptsetup"
     ;; "icedove-wayland"
     "neofetch" ;; "starship"
     "font-awesome"
+    "hicolor-icon-theme"
     ;; "font-comic-shanns-mono"
     )))
  ;; Below is the list of Home services.  To search for available
@@ -71,8 +80,8 @@
 	      (list
 	       (shepherd-service
 		(provision
-		 '(nm-applet))
-		(requirement '(dbus sway))
+		 '(nm-applet-service))
+		(requirement '(dbus sway-service))
 		(stop  #~(make-kill-destructor))
 		(start #~(make-forkexec-constructor
 			  '("env" "WAYLAND_DISPLAY=wayland-1" "nm-applet" "--sm-disable" "--no-agent")
@@ -83,7 +92,7 @@
 
 	       (shepherd-service
 		(provision '(redshift-wayland))
-		(requirement '(sway))
+		(requirement '(sway-service))
 		(stop  #~(make-kill-destructor))
 		(start #~(make-forkexec-constructor
 			  '("env" "WAYLAND_DISPLAY=wayland-1" "redshift" "-l" "52.52:13.41" "-t" "3300:1700")
@@ -94,10 +103,13 @@
 	       
 	       (shepherd-service
 		(provision
-		 '(sway))
+		 '(sway-service))
 		(documentation "Start sway on login.")
 		(start #~(make-forkexec-constructor
-			  '("sway")))
+			  '("sway")
+			  #:log-file (string-append
+				      (getenv "XDG_STATE_HOME") "/log"
+				      "/redshift.log")))
 		(stop #~(make-kill-destructor))
 		(respawn? #f))))))
    
@@ -117,14 +129,18 @@
    
    (service home-bash-service-type
 	    (home-bash-configuration
+	     ;; (text-config
+	     ;;  '("export GCM_CREDENTIAL_STORE=gpg"))
 	     (aliases
 	      '(("b" . "cd ..")
 		("build" . "rm -rf build && cmake -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=1 && make -C")
 		("celar" . "clear")
 		("clea" . "clear")
-		("cleanup" . "sudo guix system delete-generations ; guix home delete-generations ; guix package -d ; guix gc")
+		("cleanup" . "sudo guix system delete-generations && guix home delete-generations && guix package -d && guix gc")
+		("upgrade" . "guix pull && sudo guix system reconfigure /etc/config.scm && guix home reconfigure ~/system-config/home-configuration.scm")
+		;; ("gfull" . "guix pull && sudo guix system reconfigure /etc/config.scm && guix home reconfigure ~/system-config/home-configuration.scm && sudo guix system delete-generations && guix home delete-generations && guix package -d && guix gc")
 		("cleat" . "clear")
-		("comp" . "gcc -std=c17 -Wall -Wextra -fstack-protector -g3 -lm")
+		("comp" . "gcc -std=c23 -Wall -Wextra -fstack-protector -g3 -lm")
 		("em" . "emacs -nw")
 		("grep" . "grep --color=auto")
 		("la" . "ls -AF --color=auto")

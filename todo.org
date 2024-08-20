@@ -3,4 +3,4 @@
 + emacs-password-store
 + emacs-auth-source-pass
 
-  
+protoc should export PROTOC env var

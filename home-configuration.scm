@@ -14,6 +14,7 @@
  (guix config)
  (gnu home services)
  (gnu home services desktop)
+ (gnu home services ssh)
  (gnu home services shepherd)
  (gnu home services syncthing)
  (gnu home services shells)
@@ -27,7 +28,8 @@
    (list
     "gcc-toolchain" "make" "cmake" "glib:bin" "glibc"
     "signal-desktop"
-    "password-store" "emacs-password-store"
+    "password-store"
+    ;; "emacs-password-store"
     ;; "flatpak"
     "librewolf"
     ;; "emacs-next"
@@ -88,7 +90,7 @@
 			  #:log-file (string-append
 				      (getenv "XDG_STATE_HOME") "/log"
 				      "/nm-applet.log")))
-		(respawn? #t))
+		(respawn? #f))
 
 	       (shepherd-service
 		(provision '(redshift-wayland))
@@ -98,7 +100,7 @@
 			  '("env" "WAYLAND_DISPLAY=wayland-1" "redshift" "-l" "52.52:13.41" "-t" "3300:1700")
 			  #:log-file (string-append
 				      (getenv "XDG_STATE_HOME") "/log"
-				      "/redshift.log")))
+				      "/redshift.log"))) ;~/.local/state/log/
 		(respawn? #t))
 	       
 	       (shepherd-service
@@ -109,7 +111,7 @@
 			  '("sway")
 			  #:log-file (string-append
 				      (getenv "XDG_STATE_HOME") "/log"
-				      "/redshift.log")))
+				      "/sway.log")))
 		(stop #~(make-kill-destructor))
 		(respawn? #f))))))
    
@@ -118,14 +120,18 @@
 	     (syncthing-configuration
 	      (user "felix")
 	      (logflags 2))))
+
+   (service home-ssh-agent-service-type)
    
    (simple-service 'env-vars home-environment-variables-service-type
-		   `(;; ("LIBRARY_PATH" . ,(string-append %store-directory "/glibc-2.35/lib"))
-		     ("LIBRARY_PATH" . "/home/felix/.guix-home/profile/lib/")
+		   `(("LIBRARY_PATH" . "/home/felix/.guix-home/profile/lib/")
 		     ("LD_LIBRARY_PATH" . "/home/felix/.guix-home/profile/lib/")
 		     ("CFLAGS" . "/home/felix/.guix-home/profile/lib/")
 		     ("LDFLAGS" . "/home/felix/.guix-home/profile/lib/")
-		     ("EDITOR" . "/home/felix/.guix-home/profile/bin/emacs")))
+		     ("EDITOR" . "/home/felix/.guix-home/profile/bin/emacs")
+		     ("MOZ_ENABLE_WAYLAND" . "1")
+		     ("MOZ_WEBRENDER" . "1")
+		     ))
    
    (service home-bash-service-type
 	    (home-bash-configuration

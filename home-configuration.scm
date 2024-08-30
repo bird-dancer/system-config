@@ -47,10 +47,9 @@
     "isync"
     "git" "git:send-email"
     ;; dev
-    ;; "go" "gopls"
+    "go" "gopls"
     ;; "rust-cargo" "rust-analyzer" "rust"
     "rust" "rust:cargo" "rust:tools" "rust:out" "rust:rust-src"
-    ;; "rust-analyzer"
     "file"
     "password-store" "gnupg" "pinentry-tty"
     ;; "emacs-pinentry"
@@ -124,10 +123,11 @@
    (service home-ssh-agent-service-type)
    
    (simple-service 'env-vars home-environment-variables-service-type
-		   `(("LIBRARY_PATH" . "/home/felix/.guix-home/profile/lib/")
-		     ("LD_LIBRARY_PATH" . "/home/felix/.guix-home/profile/lib/")
-		     ("CFLAGS" . "/home/felix/.guix-home/profile/lib/")
-		     ("LDFLAGS" . "/home/felix/.guix-home/profile/lib/")
+		   `(
+		     ;; ("LIBRARY_PATH" . "/home/felix/.guix-home/profile/lib/")
+		     ;; ("LD_LIBRARY_PATH" . "/home/felix/.guix-home/profile/lib/")
+		     ;; ("CFLAGS" . "/home/felix/.guix-home/profile/lib/")
+		     ;; ("LDFLAGS" . "/home/felix/.guix-home/profile/lib/")
 		     ("EDITOR" . "/home/felix/.guix-home/profile/bin/emacs")
 		     ("MOZ_ENABLE_WAYLAND" . "1")
 		     ("MOZ_WEBRENDER" . "1")

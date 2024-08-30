@@ -39,6 +39,9 @@ https://guix.gnu.org/en/blog/2018/a-packaging-tutorial-for-guix/
      "Apache-2.0 with LLVM exception"))
 #+end_src
 * rust
-use guix import crate -r /packagename/ > /packagename/.scm
+use
+#+begin_src bash
+  guix import crate -r packagename > packagename.scm
+#+end_src
 * go
 use guix import go -r /packagename/

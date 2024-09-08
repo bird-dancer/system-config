@@ -34,9 +34,8 @@
     "librewolf"
     ;; "emacs-next"
     "emacs"
-    "emacs-pdf-tools"
     "enchant" "hunspell-dict-en"
-    ;; "emacs-jinx"
+    ;; "emacs-jinx" "emacs-pdf-tools"
     "ripgrep"
     "redshift-wayland"
     "stow"
@@ -52,6 +51,10 @@
     "rust" "rust:cargo" "rust:tools" "rust:out" "rust:rust-src"
     "file"
     "password-store" "gnupg" "pinentry-tty"
+
+    "network-manager-openconnect"
+    ;; "openconnect-sso"
+    "network-manager-openvpn"
     ;; "emacs-pinentry"
     ;; "cryptsetup"
     ;; "icedove-wayland"
@@ -142,7 +145,7 @@
 		("build" . "rm -rf build && cmake -B build -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=1 && make -C")
 		("celar" . "clear")
 		("clea" . "clear")
-		("cleanup" . "sudo guix system delete-generations && guix home delete-generations && guix package -d && guix gc")
+		("cleanup" . "sudo guix system delete-generations && guix home delete-generations && guix package -d && guix gc --delete-generations")
 		("upgrade" . "guix pull && sudo guix system reconfigure /etc/config.scm && guix home reconfigure ~/system-config/home-configuration.scm")
 		;; ("gfull" . "guix pull && sudo guix system reconfigure /etc/config.scm && guix home reconfigure ~/system-config/home-configuration.scm && sudo guix system delete-generations && guix home delete-generations && guix package -d && guix gc")
 		("cleat" . "clear")

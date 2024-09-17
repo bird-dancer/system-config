@@ -81,10 +81,13 @@
 	    ;; window manager
 	    sway swaylock waybar swaybg swayidle foot fuzzel
 	    wl-clipboard
+
+	    blueman
 	    ;; interact with hardware
 	    network-manager-applet
 	    brightnessctl
 	    bluez fuse
+
 	    intel-vaapi-driver libva-utils intel-media-driver/nonfree
 	    ;; inet
 	    git openssh-sans-x
@@ -95,6 +98,7 @@
  ;; services, run 'guix system search KEYWORD' in a terminal.
  (services
   (cons*
+
    ;; Seat management (can't use seatd because Wireplumber depends on elogind) tho there might be minimal package to work around this
    (service elogind-service-type)
    ;; (service seatd-service-type)
@@ -166,14 +170,15 @@
  (bootloader (bootloader-configuration
 	      (bootloader grub-efi-bootloader)
 	      (targets (list "/boot/efi"))
-	      (keyboard-layout keyboard-layout)))
+	      (keyboard-layout keyboard-layout)
+	      (extra-initrd "/key-file.cpio")))
  (mapped-devices (list (mapped-device
                         (source (uuid
                                  "b0cced08-acd5-4283-bddb-de980449e8b9"))
                         (target "cryptroot")
 			;; make it so the the luks encryption key has to be only typed once
 			(type (luks-device-mapping-with-options
-			       #:key-file "/crypto.key")))))
+			       #:key-file "/key-file.bin")))))
 
 
  ;; The list of file systems that get "mounted".  The unique

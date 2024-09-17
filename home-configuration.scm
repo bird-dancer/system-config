@@ -9,6 +9,9 @@
  (gnu packages)
  (gnu packages gnome)
  (gnu packages glib)
+ (gnu packages wm)
+ (gnu packages lisp)
+ (gnu packages fonts)
  (gnu services)
  (guix gexp)
  (guix config)
@@ -26,40 +29,41 @@
  (packages
   (specifications->packages
    (list
+
     "gcc-toolchain" "make" "cmake" "glib:bin" "glibc"
     "signal-desktop"
-    "password-store"
-    ;; "emacs-password-store"
     ;; "flatpak"
     "librewolf"
     ;; "emacs-next"
     "emacs"
-    "enchant" "hunspell-dict-en"
-    ;; "emacs-jinx" "emacs-pdf-tools"
-    "ripgrep"
+    "emacs-pdf-tools"
+    ;; "emacs-jinx" "emacs-password-store"
+    ;; "emacs-pinentry"
+    "enchant" "hunspell-dict-en" "hunspell-dict-de"
+    "notmuch" "isync"
+
+    "cagebreak"
+
+    "android-file-transfer"
+    "ripgrep" "tree" "file" "unzip"
+    "cryptsetup"
+    "curl" "nmap"
     "redshift-wayland"
     "stow"
     "htop" "powertop"
     "nomacs" "mpv" ;; "clementine"
+    ;; "ffmpeg"
     "syncthing"
-    "unzip"
-    "isync"
     "git" "git:send-email"
     ;; dev
     "go" "gopls"
-    ;; "rust-cargo" "rust-analyzer" "rust"
+    "docker-compose"
     "rust" "rust:cargo" "rust:tools" "rust:out" "rust:rust-src"
-    "file"
     "password-store" "gnupg" "pinentry-tty"
-
-    "network-manager-openconnect"
+    "network-manager-openconnect" "network-manager-openvpn"
     ;; "openconnect-sso"
-    "network-manager-openvpn"
-    ;; "emacs-pinentry"
-    ;; "cryptsetup"
-    ;; "icedove-wayland"
     "neofetch" ;; "starship"
-    "font-awesome"
+    "font-awesome" "font-google-noto-serif-cjk"
     "hicolor-icon-theme"
     ;; "font-comic-shanns-mono"
     )))
@@ -69,42 +73,10 @@
   (list
    (service home-dbus-service-type)
    
-   ;; TODO doesnt work with wayland
-   ;; (service home-redshift-service-type
-   ;;          (home-redshift-configuration
-   ;;           (location-provider 'manual)
-   ;;           (latitude 52.52)
-   ;;           (longitude 13.41)
-   ;; 	     (daytime-temperature 3300)
-   ;; 	     (nighttime-temperature 1700)))
-   
    (service home-shepherd-service-type
 	    (home-shepherd-configuration
 	     (services
 	      (list
-	       (shepherd-service
-		(provision
-		 '(nm-applet-service))
-		(requirement '(dbus sway-service))
-		(stop  #~(make-kill-destructor))
-		(start #~(make-forkexec-constructor
-			  '("env" "WAYLAND_DISPLAY=wayland-1" "nm-applet" "--sm-disable" "--no-agent")
-			  #:log-file (string-append
-				      (getenv "XDG_STATE_HOME") "/log"
-				      "/nm-applet.log")))
-		(respawn? #f))
-
-	       (shepherd-service
-		(provision '(redshift-wayland))
-		(requirement '(sway-service))
-		(stop  #~(make-kill-destructor))
-		(start #~(make-forkexec-constructor
-			  '("env" "WAYLAND_DISPLAY=wayland-1" "redshift" "-l" "52.52:13.41" "-t" "3300:1700")
-			  #:log-file (string-append
-				      (getenv "XDG_STATE_HOME") "/log"
-				      "/redshift.log"))) ;~/.local/state/log/
-		(respawn? #t))
-	       
 	       (shepherd-service
 		(provision
 		 '(sway-service))
@@ -112,8 +84,7 @@
 		(start #~(make-forkexec-constructor
 			  '("sway")
 			  #:log-file (string-append
-				      (getenv "XDG_STATE_HOME") "/log"
-				      "/sway.log")))
+				      (getenv "XDG_STATE_HOME") "/log/sway.log")))
 		(stop #~(make-kill-destructor))
 		(respawn? #f))))))
    
@@ -132,6 +103,11 @@
 		     ;; ("CFLAGS" . "/home/felix/.guix-home/profile/lib/")
 		     ;; ("LDFLAGS" . "/home/felix/.guix-home/profile/lib/")
 		     ("EDITOR" . "/home/felix/.guix-home/profile/bin/emacs")
+		     ("XDG_DOWNLOAD_DIR" . "~/Downloads")
+		     
+		     ("XDG_SESSION_TYPE" . "wayland")
+                     ("XDG_SESSION_DESKOP" . "sway")
+                     ("XDG_CURRENT_DESKTOP" . "sway")
 		     ("MOZ_ENABLE_WAYLAND" . "1")
 		     ("MOZ_WEBRENDER" . "1")
 		     ))
@@ -159,10 +135,10 @@
 	     (bashrc
 	      (list
 	       (local-file
-                "/home/felix/.dotfiles/.bashrc"
-                "bashrc")))
+		"/home/felix/.dotfiles/bash/.bashrc"
+		"bashrc")))
 	     (bash-profile
 	      (list
 	       (local-file
-                "/home/felix/.dotfiles/.bash_profile"
-                "bash_profile"))))))))
+		"/home/felix/.dotfiles/bash/.bash_profile"
+		"bash_profile"))))))))
